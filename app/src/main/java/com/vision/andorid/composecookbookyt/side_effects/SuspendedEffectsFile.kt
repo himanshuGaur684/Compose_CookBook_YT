@@ -27,9 +27,37 @@ class FakeViewModel : ViewModel() {
 
 }
 
-
 @Composable
 fun LaunchEffectsExample(fakeViewModel: FakeViewModel) {
+
+    val state = fakeViewModel.state.value
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(key1 = Unit, block = {
+        fakeViewModel.getData()
+    })
+
+    when (state) {
+        is ResultType.Loading -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        }
+        is ResultType.Success -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(text = "Success")
+            }
+        }
+        is ResultType.Idle -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(text = "Idle")
+            }
+        }
+    }
+}
+
+@Composable
+fun RememberCoroutineScopeExample(fakeViewModel: FakeViewModel) {
 
     val state = fakeViewModel.state.value
     val scope = rememberCoroutineScope()
